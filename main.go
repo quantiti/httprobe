@@ -100,8 +100,13 @@ func main() {
 				//if isListening(client, withProto, method) {
 				if (rdr != "no") {
 					//fmt.Println("FOUND RDR:" + rdr +" on URL: "+withProto)
-					output <- withProto+rdr
+					//output <- withProto+rdr
 					// skip trying HTTP if --prefer-https is set
+					if strings.Index(strings.ToLower(rdr),"http://")==0||strings.Index(strings.ToLower(rdr),"https://")==0 {
+						output <- rdr
+					} else {
+						output <- withProto+rdr
+					}
 					if preferHTTPS {
 						continue
 					}
@@ -126,7 +131,11 @@ func main() {
 				//if isListening(client, withProto, method) {
 				if (rdr != "no") {
 					//fmt.Println("FOUND RDR:" + rdr +" on URL: "+withProto)
-					output <- withProto+rdr
+					if strings.Index(strings.ToLower(rdr),"http://")==0||strings.Index(strings.ToLower(rdr),"https://")==0 {
+						output <- rdr
+					} else {
+						output <- withProto+rdr
+					}
 					continue
 				}
 			}
@@ -236,17 +245,18 @@ func isListening(client *http.Client, url, method string) string {
 		if resp.StatusCode == http.StatusFound { //status code 302
 			io.Copy(ioutil.Discard, resp.Body)
 			resp.Body.Close()
+			return resp.Header.Get("Location")
 			
-			if strings.Index(resp.Header.Get("Location"),url)==-1 {//Redirect location not contain url
-				return resp.Header.Get("Location")
-			} else {	//return url similar to http:// https:// url/newlocation...
+			//if strings.Index(resp.Header.Get("Location"),url)==-1 {//Redirect location not contain url
+			//	return resp.Header.Get("Location")
+			//} else {	//return url similar to http:// https:// url/newlocation...
 				//return("/"+resp.Header.Get("Location"))	//return redirected location
 				//fmt.Println("Thay redirect: "+resp.Header.Get("Location"))
 				//fmt.Println("URL: "+url)
 				//fmt.Println("Trimleft redirect: "+strings.TrimLeft(resp.Header.Get("Location"), url))
 				//fmt.Println("TrimRight redirect: "+strings.TrimRight(resp.Header.Get("Location"), url))
-				return "/"+strings.TrimLeft(resp.Header.Get("Location"), url)
-			}
+			//	return "/"+strings.TrimLeft(resp.Header.Get("Location"), url)
+			//}
         } else {
 			io.Copy(ioutil.Discard, resp.Body)
 			resp.Body.Close()
