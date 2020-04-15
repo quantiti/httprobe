@@ -124,7 +124,7 @@ func main() {
 				withProto := "http://" + url
 				rdr := isListening(client, withProto, method)
 				//if isListening(client, withProto, method) {
-				if isListening(client, withProto, method) {
+				if (rdr != "no") {
 					output <- withProto
 					continue
 				}
@@ -235,8 +235,9 @@ func isListening(client *http.Client, url, method string) string {
 		if resp.StatusCode == http.StatusFound { //status code 302
 			io.Copy(ioutil.Discard, resp.Body)
 			resp.Body.Close()
-			fmt.Println("Tim thay redirect"+ resp.Location())
-            return("/"+resp.Location())	//return redirected location
+			fmt.Println(resp.Location())
+			return "/Thay_redirect"
+            //return("/"+resp.Location())	//return redirected location
         } else {
             panic(err)
         }
