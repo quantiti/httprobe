@@ -96,7 +96,9 @@ func main() {
 
 				// always try HTTPS first
 				withProto := "https://" + url
-				if isListening(client, withProto, method) {
+				rdr = isListening(client, withProto, method)
+				//if isListening(client, withProto, method) {
+				if (rdr != "no") {
 					output <- withProto
 
 					// skip trying HTTP if --prefer-https is set
@@ -120,6 +122,8 @@ func main() {
 		go func() {
 			for url := range httpURLs {
 				withProto := "http://" + url
+				rdr = isListening(client, withProto, method)
+				//if isListening(client, withProto, method) {
 				if isListening(client, withProto, method) {
 					output <- withProto
 					continue
@@ -231,7 +235,7 @@ func isListening(client *http.Client, url, method string) string {
 		if resp.StatusCode == http.StatusFound { //status code 302
 			io.Copy(ioutil.Discard, resp.Body)
 			resp.Body.Close()
-			fmt.Println("Tim thay redirect"+response.Location())
+			fmt.Println("Tim thay redirect"+ resp.Location())
             return("/"+resp.Location())	//return redirected location
         } else {
             panic(err)
