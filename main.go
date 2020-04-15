@@ -236,12 +236,9 @@ func isListening(client *http.Client, url, method string) string {
 			io.Copy(ioutil.Discard, resp.Body)
 			resp.Body.Close()
 			
-			if Index(resp.Header.Get("Location"),url)==-1 //Redirect location not contain url
-			{	
+			if Index(resp.Header.Get("Location"),url)==-1 {//Redirect location not contain url
 				return resp.Header.Get("Location")
-			}
-			else 
-			{	//return url similar to http:// https:// url/newlocation...
+			} else {	//return url similar to http:// https:// url/newlocation...
 				//return("/"+resp.Header.Get("Location"))	//return redirected location
 				return TrimLeft(resp.Header.Get("Location"), url)
 			}
