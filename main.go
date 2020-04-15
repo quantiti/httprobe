@@ -240,7 +240,11 @@ func isListening(client *http.Client, url, method string) string {
 				return resp.Header.Get("Location")
 			} else {	//return url similar to http:// https:// url/newlocation...
 				//return("/"+resp.Header.Get("Location"))	//return redirected location
-				return strings.TrimLeft(resp.Header.Get("Location"), url)
+				fmt.Println("Thay redirect: "+"/"+resp.Header.Get("Location"))
+				fmt.Println("URL: "+url)
+				fmt.Println("Trimleft redirect: "+strings.TrimLeft(resp.Header.Get("Location"), url))
+				fmt.Println("Trimleft redirect: "+strings.TrimRight(resp.Header.Get("Location"), url))
+				return strings.TrimRight(resp.Header.Get("Location"), url)
 			}
 			//fmt.Println("Thay redirect: "+"/"+resp.Header.Get("Location"))
             //return("/"+resp.Header.Get("Location"))	//return redirected location
