@@ -1,8 +1,8 @@
 # httprobe
 
 Take a list of domains and probe for working http and https servers.
-Folked from httprobe
-Edited to return redirected url if has
+Folked from httprobe.
+Edited to return redirected url if has.
 
 ## Install
 
