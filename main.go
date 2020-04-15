@@ -95,9 +95,10 @@ func main() {
 			for url := range httpsURLs {
 
 				// always try HTTPS first
+				var rdr := isListening(client, withProto, method)
 				withProto := "https://" + url
-				if isListening(client, withProto, method) {
-					output <- withProto
+				if (rdr != "no") {
+					output <- (withProto + rdr)
 
 					// skip trying HTTP if --prefer-https is set
 					if preferHTTPS {
@@ -120,8 +121,9 @@ func main() {
 		go func() {
 			for url := range httpURLs {
 				withProto := "http://" + url
-				if isListening(client, withProto, method) {
-					output <- withProto
+				var rdr= isListening(client, withProto, method)
+				if (rdr != "no")	{
+					output <- (withProto + rdr)
 					continue
 				}
 			}
