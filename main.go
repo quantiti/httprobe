@@ -99,8 +99,8 @@ func main() {
 				rdr := isListening(client, withProto, method)
 				//if isListening(client, withProto, method) {
 				if (rdr != "no") {
+					fmt.Println("FOUND RDR:" + rdr +" on URL: "+withProto)
 					output <- withProto
-
 					// skip trying HTTP if --prefer-https is set
 					if preferHTTPS {
 						continue
@@ -125,6 +125,7 @@ func main() {
 				rdr := isListening(client, withProto, method)
 				//if isListening(client, withProto, method) {
 				if (rdr != "no") {
+					fmt.Println("FOUND RDR:" + rdr +" on URL: "+withProto)
 					output <- withProto
 					continue
 				}
@@ -240,11 +241,11 @@ func isListening(client *http.Client, url, method string) string {
 				return resp.Header.Get("Location")
 			} else {	//return url similar to http:// https:// url/newlocation...
 				//return("/"+resp.Header.Get("Location"))	//return redirected location
-				fmt.Println("Thay redirect: "+"/"+resp.Header.Get("Location"))
+				fmt.Println("Thay redirect: "+resp.Header.Get("Location"))
 				fmt.Println("URL: "+url)
 				fmt.Println("Trimleft redirect: "+strings.TrimLeft(resp.Header.Get("Location"), url))
-				fmt.Println("Trimleft redirect: "+strings.TrimRight(resp.Header.Get("Location"), url))
-				return strings.TrimRight(resp.Header.Get("Location"), url)
+				fmt.Println("TrimRight redirect: "+strings.TrimRight(resp.Header.Get("Location"), url))
+				return strings.TrimLeft(resp.Header.Get("Location"), url)
 			}
 			//fmt.Println("Thay redirect: "+"/"+resp.Header.Get("Location"))
             //return("/"+resp.Header.Get("Location"))	//return redirected location
