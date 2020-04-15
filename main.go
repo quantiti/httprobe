@@ -216,8 +216,8 @@ func main() {
 
 func isListening(client *http.Client, url, method string) string {
 	//quantt - add to check redirect
-	client.CheckRedirect = func(req1 *http.Request, via []*http.Request) error {
-        return error.New("Redirect")
+	client.CheckRedirect = func(req1 *http.Request, via []*http.Request) errors {
+        return errors.New("Redirect")
     }
 	//
 	
