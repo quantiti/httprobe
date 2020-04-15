@@ -210,25 +210,39 @@ func main() {
 	outputWG.Wait()
 }
 
-func isListening(client *http.Client, url, method string) bool {
-
+func isListening(client *http.Client, url, method string) string {
+	//quantt - add to check redirect
+	client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+        return errors.New("Redirect")
+    }
+	//
+	
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
-		return false
+		return "no"
 	}
 
 	req.Header.Add("Connection", "close")
 	req.Close = true
-
+	
+	//Submit request
 	resp, err := client.Do(req)
-	if resp != nil {
+	if resp != nil {	//successful
+		if resp.StatusCode == http.StatusFound { //status code 302
+			io.Copy(ioutil.Discard, resp.Body)
+			resp.Body.Close()
+			fmt.Println("Tim thay redirect: "+response.Location())
+            return("/"+resp.Location())	//return redirected location
+        } else {
+            panic(err)
+        }
 		io.Copy(ioutil.Discard, resp.Body)
 		resp.Body.Close()
 	}
 
-	if err != nil {
-		return false
+	if err != nil { //failed
+		return "no"	//do not listening on this port
 	}
 
-	return true
+	return ""	//no redirect
 }
