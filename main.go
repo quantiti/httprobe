@@ -235,8 +235,16 @@ func isListening(client *http.Client, url, method string) string {
 		if resp.StatusCode == http.StatusFound { //status code 302
 			io.Copy(ioutil.Discard, resp.Body)
 			resp.Body.Close()
-			fmt.Println("Thay redirect: "+"/"+resp.Header.Get("Location"))
-            return("/"+resp.Header.Get("Location"))	//return redirected location
+			
+			if (Index(resp.Header.Get("Location"),url ==  -1) {	//Redirect location not contain url
+				return resp.Header.Get("Location")
+			}
+			else {	//return url similar to http:// https:// url/newlocation...
+				//return("/"+resp.Header.Get("Location"))	//return redirected location
+				return TrimLeft(resp.Header.Get("Location"), url)
+			}
+			//fmt.Println("Thay redirect: "+"/"+resp.Header.Get("Location"))
+            //return("/"+resp.Header.Get("Location"))	//return redirected location
         } else {
 			io.Copy(ioutil.Discard, resp.Body)
 			resp.Body.Close()
