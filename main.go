@@ -275,19 +275,8 @@ func isListening1(client *http.Client, url, method string) string {
 }
 
 func isListening (client *http.Client, url, method string) string { 
-	var resp *http.Response
-	var err error
-	if strings.ToLower(method) == "get" {
-		resp, err := http.Get(url)
-	} else {
-	//	formData := net/url.Values {
-	//		"username": {""},
-	//	}
-	//	resp, err := http.Post(url,formData)
-		resp, err := http.Get(url)
-	}
-    
-    if err != nil {
+	resp, err := http.Get(url)
+	if err != nil {
         return "no"
     }
 	defer resp.Body.Close()
