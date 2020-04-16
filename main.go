@@ -241,6 +241,10 @@ func isListening(client *http.Client, url, method string) string {
 	
 	//Submit request
 	resp, err := client.Do(req)
+
+	finalURL := resp.Request.URL.String()
+    fmt.Println("Procesing URL "+url+ " and the URL you ended up at is: "+finalURL)
+	
 	if resp != nil {	//successful
 		if resp.StatusCode == http.StatusFound || resp.StatusCode == http.StatusMovedPermanently { //status code 302 || 301
 			io.Copy(ioutil.Discard, resp.Body)
