@@ -242,7 +242,7 @@ func isListening(client *http.Client, url, method string) string {
 	//Submit request
 	resp, err := client.Do(req)
 	if resp != nil {	//successful
-		if resp.StatusCode == http.StatusFound || resp.StatusCode == StatusMovedPermanently { //status code 302 || 301
+		if resp.StatusCode == http.StatusFound || resp.StatusCode == http.StatusMovedPermanently { //status code 302 || 301
 			io.Copy(ioutil.Discard, resp.Body)
 			resp.Body.Close()
 			return resp.Header.Get("Location")
