@@ -271,7 +271,7 @@ func isListening2 (client *http.Client, url, method string) string {
 	return resp.Request.URL.String()
 }
 
-func isListening2 (client *http.Client, url, method string) string { 
+func isListening (client *http.Client, url, method string) string { 
 	client := http.Client{
         Timeout: time.Duration(3 * time.Millisecond),
     }
