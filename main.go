@@ -100,6 +100,9 @@ func main() {
 
 				// always try HTTPS first
 				withProto := "https://" + url
+				if debug {
+					fmt.Println("Procesing url: "+withProto)
+				}
 				rdr := isListening(client, withProto, method)
 				if (rdr != "no") {	//server is listening and respone to a destination url
 					output <- url
@@ -285,9 +288,6 @@ func isListening (client *http.Client, url, method string) string {
 	client1 := http.Client{
         Timeout: time.Duration(10000 * time.Millisecond),
     }
-	if debug {
-		fmt.Println("Procesing url: "+url)
-	}
 	resp, err := client1.Get(url)
 	//fmt.Println("Procesing "+url)
 	if err != nil {
