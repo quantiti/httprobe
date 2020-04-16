@@ -259,14 +259,29 @@ func isListening1(client *http.Client, url, method string) string {
 	return ""	//no redirect
 }
 
-func isListening (client *http.Client, url, method string) string { 
+func isListening2 (client *http.Client, url, method string) string { 
 	resp, err := http.Get(url)
-	fmt.Println("Procesing"+url)
+	#fmt.Println("Procesing "+url)
 	if err != nil {
-		fmt.Println("Procesing"+url+" ERROR")
+		#fmt.Println("Procesing "+url+" ERROR")
         return "no"
     }
 	defer resp.Body.Close()
-	fmt.Println("Procesing"+url+" Result: "+resp.Request.URL.String())
+	#fmt.Println("Procesing "+url+" Result: "+resp.Request.URL.String())
+	return resp.Request.URL.String()
+}
+
+func isListening2 (client *http.Client, url, method string) string { 
+	client := http.Client{
+        Timeout: time.Duration(3 * time.Millisecond),
+    }
+	resp, err := client.Get(url)
+	#fmt.Println("Procesing "+url)
+	if err != nil {
+		#fmt.Println("Procesing "+url+" ERROR")
+        return "no"
+    }
+	defer resp.Body.Close()
+	#fmt.Println("Procesing "+url+" Result: "+resp.Request.URL.String())
 	return resp.Request.URL.String()
 }
