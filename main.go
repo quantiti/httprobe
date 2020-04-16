@@ -105,6 +105,9 @@ func main() {
 				}
 				rdr := isListening(client, withProto, method)
 				if (rdr != "no") {	//server is listening and respone to a destination url
+					if debug {
+						fmt.Println("HTTPS DONE, withProto: "+withProto+" RDR: "+rdr)
+					}
 					output <- withProto
 					if rdr != withProto && rdr != withProto+"/" {
 						output <- rdr
@@ -130,6 +133,9 @@ func main() {
 				rdr := isListening(client, withProto, method)
 				//if isListening(client, withProto, method) {
 				if (rdr != "no") {
+					if debug {
+						fmt.Println("HTTP DONE, withProto: "+withProto+" RDR: "+rdr)
+					}
 					output <- withProto
 					if rdr != withProto && rdr != withProto+"/" {
 						output <- rdr
