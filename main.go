@@ -13,7 +13,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-	"net/url"
 )
 
 type probeArgs []string
@@ -281,10 +280,11 @@ func isListening (client *http.Client, url, method string) string {
 	if strings.ToLower(method) == "get" {
 		resp, err := http.Get(url)
 	} else {
-		formData := net/url.Values {
-			"username": {""},
-		}
-		resp, err := http.Post(url,formData)
+	//	formData := net/url.Values {
+	//		"username": {""},
+	//	}
+	//	resp, err := http.Post(url,formData)
+		resp, err := http.Get(url)
 	}
     
     if err != nil {
