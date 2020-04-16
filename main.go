@@ -12,7 +12,8 @@ import (
 	"os"
 	"strings"
 	"sync"
-	"time"	
+	"time"
+	"net/url"
 )
 
 type probeArgs []string
@@ -276,7 +277,7 @@ func isListening1(client *http.Client, url, method string) string {
 
 func isListening (client *http.Client, url, method string) string { 
 	var resp *http.Response
-	var err http.error
+	var err error
 	if strings.ToLower(method) == "get" {
 		resp, err := http.Get(url)
 	} else {
