@@ -28,6 +28,10 @@ func (p probeArgs) String() string {
 
 func main() {
 
+	//debug flags
+	var debug bool
+	flag.BoolVar(&debug, "debug", false, "Display debug logs with -debug option")
+	
 	// concurrency flag
 	var concurrency int
 	flag.IntVar(&concurrency, "c", 20, "set the concurrency level (split equally between HTTPS and HTTP requests)")
@@ -279,8 +283,11 @@ func isListening2 (client *http.Client, url, method string) string {
 
 func isListening (client *http.Client, url, method string) string { 
 	client1 := http.Client{
-        Timeout: time.Duration(3000 * time.Millisecond),
+        Timeout: time.Duration(10000 * time.Millisecond),
     }
+	if debug {
+		fmt.Println("Procesing url: "+url)
+	}
 	resp, err := client1.Get(url)
 	//fmt.Println("Procesing "+url)
 	if err != nil {
