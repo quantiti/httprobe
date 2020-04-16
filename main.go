@@ -224,7 +224,7 @@ func main() {
 	outputWG.Wait()
 }
 
-func isListening(client *http.Client, url, method string) string {
+func isListening1(client *http.Client, url, method string) string {
 	//quantt - add to check redirect
 	//client.CheckRedirect = func(req1 *http.Request, via []*http.Request) errors {
     //    return errors.New("Redirect")
@@ -272,4 +272,18 @@ func isListening(client *http.Client, url, method string) string {
 	}
 
 	return ""	//no redirect
+}
+
+func (client *http.Client, url, method string) string { 
+	if strings.ToLower(method) == "get" {
+		resp, err := http.Get(url)
+	}
+	else {
+		resp, err := http.Post(url)
+	}
+    
+    if err != nil {
+        return "no"
+    }
+	return resp.Request.URL.String()
 }
