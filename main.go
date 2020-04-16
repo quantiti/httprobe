@@ -275,6 +275,7 @@ func isListening1(client *http.Client, url, method string) string {
 }
 
 func isListening (client *http.Client, url, method string) string { 
+	var err, resp
 	if strings.ToLower(method) == "get" {
 		resp, err := http.Get(url)
 	} else {
