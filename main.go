@@ -281,7 +281,7 @@ func isListening (client *http.Client, url, method string) string {
 	if strings.ToLower(method) == "get" {
 		resp, err := http.Get(url)
 	} else {
-		formData := url.Values {
+		formData := net/url.Values {
 			"username": {""},
 		}
 		resp, err := http.Post(url,formData)
