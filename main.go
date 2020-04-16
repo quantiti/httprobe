@@ -105,8 +105,8 @@ func main() {
 				}
 				rdr := isListening(client, withProto, method)
 				if (rdr != "no") {	//server is listening and respone to a destination url
-					output <- url
-					if rdr != url {
+					output <- withProto
+					if rdr != withProto {
 						output <- rdr
 					}
 					if preferHTTPS {
@@ -130,8 +130,8 @@ func main() {
 				rdr := isListening(client, withProto, method)
 				//if isListening(client, withProto, method) {
 				if (rdr != "no") {
-					output <- url
-					if rdr != url {
+					output <- withProto
+					if rdr != withProto {
 						output <- rdr
 					}
 					continue
