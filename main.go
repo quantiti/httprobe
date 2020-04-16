@@ -261,7 +261,9 @@ func isListening1(client *http.Client, url, method string) string {
 
 func isListening (client *http.Client, url, method string) string { 
 	resp, err := http.Get(url)
+	fmt.Println("Procesing"+url)
 	if err != nil {
+		fmt.Println("Procesing"+url+" ERROR")
         return "no"
     }
 	defer resp.Body.Close()
