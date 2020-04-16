@@ -276,12 +276,12 @@ func isListening (client *http.Client, url, method string) string {
         Timeout: time.Duration(3000 * time.Millisecond),
     }
 	resp, err := client1.Get(url)
-	fmt.Println("Procesing "+url)
+	//fmt.Println("Procesing "+url)
 	if err != nil {
-		fmt.Println("Procesing "+url+" ERROR")
+		//fmt.Println("Procesing "+url+" ERROR")
         return "no"
     }
 	defer resp.Body.Close()
-	fmt.Println("Procesing "+url+" Result: "+resp.Request.URL.String())
+	//fmt.Println("Procesing "+url+" Result: "+resp.Request.URL.String())
 	return resp.Request.URL.String()
 }
