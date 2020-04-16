@@ -278,12 +278,15 @@ func isListening (client *http.Client, url, method string) string {
 	var err, resp
 	if strings.ToLower(method) == "get" {
 		resp, err := http.Get(url)
+		if err != nil {
+			return "no"
+		}	
+		return resp.Request.URL.String()
 	} else {
 		resp, err := http.Post(url)
+		if err != nil {
+			return "no"
+		}
+		return resp.Request.URL.String()
 	}
-    
-    if err != nil {
-        return "no"
-    }
-	return resp.Request.URL.String()
 }
