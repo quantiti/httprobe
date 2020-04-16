@@ -272,10 +272,10 @@ func isListening2 (client *http.Client, url, method string) string {
 }
 
 func isListening (client *http.Client, url, method string) string { 
-	client := http.Client{
+	client1 := http.Client{
         Timeout: time.Duration(3 * time.Millisecond),
     }
-	resp, err := client.Get(url)
+	resp, err := client1.Get(url)
 	//fmt.Println("Procesing "+url)
 	if err != nil {
 		//fmt.Println("Procesing "+url+" ERROR")
