@@ -103,7 +103,7 @@ func main() {
 				if debug {
 					fmt.Println("Procesing url: "+withProto)
 				}
-				rdr := isListening(client, withProto, method)
+				rdr := isListening(client, withProto, method, debug)
 				if (rdr != "no") {	//server is listening and respone to a destination url
 					if debug {
 						fmt.Println("HTTPS DONE, withProto: "+withProto+" RDR: "+rdr)
@@ -130,7 +130,7 @@ func main() {
 		go func() {
 			for url := range httpURLs {
 				withProto := "http://" + url
-				rdr := isListening(client, withProto, method)
+				rdr := isListening(client, withProto, method, debug)
 				//if isListening(client, withProto, method) {
 				if (rdr != "no") {
 					if debug {
@@ -290,7 +290,8 @@ func isListening2 (client *http.Client, url, method string) string {
 	return resp.Request.URL.String()
 }
 
-func isListening (client *http.Client, url, method string) string { 
+func isListening (client *http.Client, url, method string, debug bool) string { 
+	
 	client1 := http.Client{
         Timeout: time.Duration(5000 * time.Millisecond),
     }
