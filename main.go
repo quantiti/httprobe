@@ -72,9 +72,9 @@ func main() {
 		}).DialContext,
 	}
 
-	re := func(req *http.Request, via []*http.Request) error {
-		return http.ErrUseLastResponse
-	}
+	//re := func(req *http.Request, via []*http.Request) error {
+	//	return http.ErrUseLastResponse
+	//}
 
 	client := &http.Client{
 		Transport:     tr,
