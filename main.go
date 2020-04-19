@@ -78,7 +78,7 @@ func main() {
 
 	client := &http.Client{
 		Transport:     tr,
-		CheckRedirect: re,
+		//CheckRedirect: re,
 		Timeout:       timeout,
 	}
 
