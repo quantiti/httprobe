@@ -301,7 +301,7 @@ func isListening (client *http.Client, url, method string) string {
         return "no"
     }
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
+	_, err := ioutil.ReadAll(resp.Body)
 	
 	//fmt.Println("Procesing "+url+" Result: "+resp.Request.URL.String())
 	return resp.Request.URL.String()
