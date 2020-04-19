@@ -292,16 +292,20 @@ func isListening2 (client *http.Client, url, method string) string {
 
 func isListening (client *http.Client, url, method string) string { 
 	client1 := http.Client{
-        Timeout: time.Duration(10000 * time.Millisecond),
+        Timeout: time.Duration(5000 * time.Millisecond),
     }
 	resp, err := client1.Get(url)
 	//fmt.Println("Procesing "+url)
 	if err != nil {
-		//fmt.Println("Procesing "+url+" ERROR")
-        return "no"
+		if debug {
+			fmt.Println("Procesing "+url+" ERROR")
+		}
+		defer resp.Body.Close()
+		ioutil.ReadAll(resp.Body)
+		return "no"
     }
 	defer resp.Body.Close()
-	_, err := ioutil.ReadAll(resp.Body)
+	ioutil.ReadAll(resp.Body)
 	
 	//fmt.Println("Procesing "+url+" Result: "+resp.Request.URL.String())
 	return resp.Request.URL.String()
