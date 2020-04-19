@@ -250,24 +250,11 @@ func isListening1(client *http.Client, url, method string) string {
     fmt.Println("Procesing URL "+url+ " and the URL you ended up at is: "+finalURL)
 	
 	if resp != nil {	//successful
-		if resp.StatusCode == http.StatusFound || resp.StatusCode == http.StatusMovedPermanently { //status code 302 || 301
-			io.Copy(ioutil.Discard, resp.Body)
-			resp.Body.Close()
-			return resp.Header.Get("Location")
+		io.Copy(ioutil.Discard, resp.Body)
+		resp.Body.Close()
 			
-			//if strings.Index(resp.Header.Get("Location"),url)==-1 {//Redirect location not contain url
-			//	return resp.Header.Get("Location")
-			//} else {	//return url similar to http:// https:// url/newlocation...
-				//return("/"+resp.Header.Get("Location"))	//return redirected location
-				//fmt.Println("Thay redirect: "+resp.Header.Get("Location"))
-				//fmt.Println("URL: "+url)
-				//fmt.Println("Trimleft redirect: "+strings.TrimLeft(resp.Header.Get("Location"), url))
-				//fmt.Println("TrimRight redirect: "+strings.TrimRight(resp.Header.Get("Location"), url))
-			//	return "/"+strings.TrimLeft(resp.Header.Get("Location"), url)
-			//}
-        } else {
-			io.Copy(ioutil.Discard, resp.Body)
-			resp.Body.Close()
+		if resp.StatusCode == http.StatusFound || resp.StatusCode == http.StatusMovedPermanently { //status code 302 || 301
+			return resp.Header.Get("Location")
         }		
 	}
 
@@ -278,36 +265,20 @@ func isListening1(client *http.Client, url, method string) string {
 	return ""	//no redirect
 }
 
-func isListening2 (client *http.Client, url, method string) string { 
-	resp, err := http.Get(url)
-	//fmt.Println("Procesing "+url)
-	if err != nil {
-		//fmt.Println("Procesing "+url+" ERROR")
-        return "no"
-    }
-	defer resp.Body.Close()
-	//fmt.Println("Procesing "+url+" Result: "+resp.Request.URL.String())
-	return resp.Request.URL.String()
-}
-
 func isListening (client *http.Client, url, method string, debug bool) string { 
 	
-	client1 := http.Client{
-        Timeout: time.Duration(5000 * time.Millisecond),
-    }
-	resp, err := client1.Get(url)
-	//fmt.Println("Procesing "+url)
+	resp, err := client.Get(url)
 	if err != nil {
 		if debug {
 			fmt.Println("Procesing "+url+" ERROR")
 		}
-		//defer resp.Body.Close()
-		//ioutil.ReadAll(resp.Body)
 		return "no"
-    }
+    }	
+	io.Copy(ioutil.Discard, resp.Body)
 	defer resp.Body.Close()
-	ioutil.ReadAll(resp.Body)
-	
-	//fmt.Println("Procesing "+url+" Result: "+resp.Request.URL.String())
+		
+	if debug {
+		fmt.Println("Procesing "+url+" Result: "+resp.Request.URL.String())
+	}
 	return resp.Request.URL.String()
 }
