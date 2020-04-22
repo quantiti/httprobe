@@ -100,14 +100,14 @@ func main() {
 
 				// always try HTTPS first
 				withProto := "https://" + url
-				if debug {
-					fmt.Println("Procesing url: "+withProto)
-				}
+				//if debug {
+				//	fmt.Println("Procesing url: "+withProto)
+				//}
 				rdr := isListening(client, withProto, method, debug)
 				if (rdr != "no") {	//server is listening and respone to a destination url
-					if debug {
-						fmt.Println("HTTPS DONE, withProto: "+withProto+" RDR: "+rdr)
-					}
+					//if debug {
+					//	fmt.Println("HTTPS DONE, withProto: "+withProto+" RDR: "+rdr)
+					//}
 					output <- withProto
 					if rdr != withProto && rdr != withProto+"/" {
 						output <- rdr
@@ -117,6 +117,9 @@ func main() {
 					}
 				}
 				httpURLs <- url
+			}
+			if debug {
+				fmt.Println("COMPLETED PROCESSING HTTPS QUEUE")
 			}
 			httpsWG.Done()
 		}()
@@ -133,9 +136,9 @@ func main() {
 				rdr := isListening(client, withProto, method, debug)
 				//if isListening(client, withProto, method) {
 				if (rdr != "no") {
-					if debug {
-						fmt.Println("HTTP DONE, withProto: "+withProto+" RDR: "+rdr)
-					}
+					//if debug {
+					//	fmt.Println("HTTP DONE, withProto: "+withProto+" RDR: "+rdr)
+					//}
 					output <- withProto
 					if rdr != withProto && rdr != withProto+"/" {
 						output <- rdr
@@ -143,7 +146,9 @@ func main() {
 					continue
 				}
 			}
-
+			if debug {
+				fmt.Println("COMPLETED PROCESSING HTTP QUEUE")
+			}
 			httpWG.Done()
 		}()
 	}
@@ -221,56 +226,22 @@ func main() {
 
 	// check there were no errors reading stdin (unlikely)
 	if err := sc.Err(); err != nil {
-		fmt.Fprintf(os.Stderr, "failed to read input: %s\n", err)
+		fmt.Println(os.Stderr, "failed to read input: %s\n", err)
 	}
 
 	// Wait until the output waitgroup is done
 	outputWG.Wait()
 }
 
-func isListening1(client *http.Client, url, method string) string {
-	//quantt - add to check redirect
-	//client.CheckRedirect = func(req1 *http.Request, via []*http.Request) errors {
-    //    return errors.New("Redirect")
-    //}
-	//
-	
-	req, err := http.NewRequest(method, url, nil)
-	if err != nil {
-		return "no"
-	}
-
-	req.Header.Add("Connection", "close")
-	req.Close = true
-	
-	//Submit request
-	resp, err := client.Do(req)
-
-	finalURL := resp.Request.URL.String()
-    fmt.Println("Procesing URL "+url+ " and the URL you ended up at is: "+finalURL)
-	
-	if resp != nil {	//successful
-		io.Copy(ioutil.Discard, resp.Body)
-		resp.Body.Close()
-			
-		if resp.StatusCode == http.StatusFound || resp.StatusCode == http.StatusMovedPermanently { //status code 302 || 301
-			return resp.Header.Get("Location")
-        }		
-	}
-
-	if err != nil { //failed
-		return "no"	//do not listening on this port
-	}
-
-	return ""	//no redirect
-}
-
 func isListening (client *http.Client, url, method string, debug bool) string { 
+	if debug {
+		fmt.Println(" START Procesing "+url)
+	}
 	
 	resp, err := client.Get(url)
 	if err != nil {
 		if debug {
-			fmt.Println("Procesing "+url+" ERROR")
+			fmt.Println(" ERROR Procesing "+url+" : " + string(err.Error()))
 		}
 		return "no"
     }	
@@ -278,7 +249,7 @@ func isListening (client *http.Client, url, method string, debug bool) string {
 	defer resp.Body.Close()
 		
 	if debug {
-		fmt.Println("Procesing "+url+" Result: "+resp.Request.URL.String())
+		fmt.Println(" DONE Procesing "+url+" Result: "+resp.Request.URL.String())
 	}
 	return resp.Request.URL.String()
 }
